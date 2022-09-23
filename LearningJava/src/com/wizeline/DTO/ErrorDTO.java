@@ -1,14 +1,16 @@
 package com.wizeline.DTO;
 
 public class ErrorDTO {
+
     String errorCode;
+
     String message;
 
-    public ErrorDTO(){
+    public ErrorDTO() {
         super();
     }
 
-    public ErrorDTO(String errorCode, String message){
+    public ErrorDTO(String errorCode, String message) {
         super();
         this.errorCode = errorCode;
         this.message = message;

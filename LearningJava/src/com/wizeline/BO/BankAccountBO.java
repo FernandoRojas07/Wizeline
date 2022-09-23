@@ -1,13 +1,14 @@
 package com.wizeline.BO;
 
-import java.util.List;
-
 import com.wizeline.DTO.BankAccountDTO;
+
+import java.util.List;
 
 public interface BankAccountBO {
 
-	BankAccountDTO getAccountDetails(String user, String lastUsage);
-	
-	List<BankAccountDTO> getAccounts();
+    BankAccountDTO getAccountDetails(String user, String lastUsage);
+
+
+    List<BankAccountDTO> getAccounts();
 
 }

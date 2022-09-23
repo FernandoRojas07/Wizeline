@@ -3,12 +3,14 @@ package com.wizeline.DTO;
 public class ResponseDTO {
 
     private String status;
-    private String code;
-    private ErrorDTO errors = new ErrorDTO();
 
-    public java.lang.String getStatus() {
+    private String code;
+
+    public String getStatus() {
         return status;
     }
+
+    private ErrorDTO errors = new ErrorDTO();
 
     public void setStatus(String status) {
         this.status = status;
