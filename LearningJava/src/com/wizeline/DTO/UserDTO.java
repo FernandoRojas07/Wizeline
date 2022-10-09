@@ -10,10 +10,7 @@ public class UserDTO {
 
     private User(UserBuilder userBuilder){
         this.user = userBuilder.user;
-        this.pass = userBuilder.pass;
-        this.tipo = userBuilder.tipo;
-        this.administrador = userBuilder.administrador;
-        this.edad = userBuilder.edad;
+        this.password = userBuilder.password;
     }
 
     public String getUser() {
@@ -41,7 +38,7 @@ public class UserDTO {
 
     public static final class UserBuilder{
         private String user;
-        private String pass;
+        private String password;
 
         public UserBuilder() {
         }
@@ -50,8 +47,8 @@ public class UserDTO {
             this.user = user;
             return this;
         }
-        public UserBuilder pass(String pass) {
-            this.pass = pass;
+        public UserBuilder password(String password) {
+            this.password = password;
             return this;
         }
 
