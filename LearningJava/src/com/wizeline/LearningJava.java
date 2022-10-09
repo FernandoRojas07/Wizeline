@@ -257,6 +257,7 @@ public class LearningJava extends Thread {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Map<String, String> splitQuery(URI uri) throws UnsupportedEncodingException {
 		Map<String, String> query_pairs = new LinkedHashMap<String, String>();
 		String query = uri.getQuery();
