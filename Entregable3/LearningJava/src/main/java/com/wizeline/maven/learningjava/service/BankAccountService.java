@@ -17,7 +17,7 @@ public interface BankAccountService {
 
     BankAccountDTO getAccountDetails(String user, String lastUsage);
 
-    void deleteAccounts();
+    ResponseEntity<ResponseDTO> deleteAccounts(BankAccountDTO bankAccountDTO);
 
     List<BankAccountDTO> getAccountByUser(String user);
 

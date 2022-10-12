@@ -48,59 +48,56 @@ public class UserControllerTests {
     }
 
     @Test
-    @DisplayName("Se prueba el happy path")
-    public void procesandoCaminoFeliz() {
-
-        LOGGER.info("Inica el servicio del Camino Feliz de login");
+    @DisplayName("Prueba Happy path")
+    public void pruebaHappyPath() {
+        LOGGER.info("LearningJava - Inicia prueba Happy path");
         response = userController.loginUser(user, password);
         codigoServ = response.getStatusCodeValue();
-
-        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue());
-        assertEquals(200, codigoServ);
+        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue() + " Happy path");
+        assertEquals(200, codigoServ, "Prueba Happy path exitosa");
     }
 
     @Test
     @DisplayName("Prueba Servicios Login")
     public void pruebaLogin() {
-        LOGGER.info("Se iniciando la prueba servicios Rest /login");
+        LOGGER.info("LearningJava - Se inicia la prueba servicios GET /login");
         response = userController.loginUser(user, password);
         codigoServ = response.getStatusCodeValue();
-
-        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue());
-        assertEquals(200,codigoServ);
+        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue() + " del /login");
+        assertEquals(200,codigoServ, "Prueba login exitosa");
     }
 
     @Test
     @DisplayName("Prueba Servicios Login - Error")
     public void pruebaLoginError() {
-        LOGGER.info("Se inicia la prueba del servicio Rest /login marcando error");
+        LOGGER.info("LearningJava - Se inicia la prueba del servicio GET /login con error");
         response = userController.loginUser(user, "1235214");
         String codResp = response.getBody().getCode();
-        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue());
-        assertEquals("ER001", codResp,"Error al hacer login");
+        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue() + " de /login con error");
+        assertEquals("ER001", codResp,"Prueba Error /login exitosa");
     }
 
     @Test
-    @DisplayName("Prueba Servicios Crear Usuario")
+    @DisplayName("Prueba Servicios crear Usuario")
     public void pruebaCrearUsuario() {
-        LOGGER.info("Se iniciando la prueba del servicio Rest /createUser");
+        LOGGER.info("LearningJava - Se inicia la prueba del servicio /createUser");
         userDTO.setUser(user);
         userDTO.setPassword(password);
         response = userController.createUserAccount(userDTO);
-        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue());
-        assertEquals(200, response.getStatusCodeValue());
+        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue() + " de /createUser.");
+        assertEquals(200, response.getStatusCodeValue(), "Prueba /createUser exitosa");
     }
 
     @Test
-    @DisplayName("Prueba crear usuario Error")
+    @DisplayName("Prueba crear usuario con Error")
     public void pruebaCrearUsuarioError() {
         password = null;
         user = null;
-        LOGGER.info("Se iniciando la prueba servicios Rest /createUser con error");
+        LOGGER.info("LearningJava - Se inicia la prueba servicios Rest /createUser con error");
         response = userController.createUserAccount(userDTO);
         String codigoResp = response.getBody().getStatus();
-        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue());
-        assertEquals("fail", codigoResp, "No se pudeo crear el usuario");
+        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue() + " del servicio /createUser");
+        assertEquals("fail", codigoResp, "Prueba /createUser con error exitosa.");
     }
 
     @Test
@@ -115,7 +112,63 @@ public class UserControllerTests {
         userDTO.setPassword("pa$$12");
         listDto.add(userDTO);
         responseList = userController.createUsersAccount(listDto);
-        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue());
-        assertEquals(200, responseList.getStatusCodeValue());
+        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue() + " del servicio /createUsers");
+        assertEquals(200, responseList.getStatusCodeValue(), "Prueba /createUsers con error exitosa");
+    }
+
+    @Test
+    @DisplayName("Eliminar Usuario")
+    public void eliminarUsuario() throws Exception {
+        LOGGER.info("LearningJava - Se inicia la prueba del servicio /delete/user");
+        userDTO.setUser(user);
+        userDTO.setPassword(password);
+        response = userController.eliminarUsuario(userDTO);
+        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue() + " de /delete/user.");
+        assertEquals(200, response.getStatusCodeValue(), "Prueba /delete/user exitosa");
+    }
+
+    @Test
+    @DisplayName("Prueba eliminar usuario con Error")
+    public void pruebaEliminarUsuarioError() {
+        password = null;
+        user = null;
+        LOGGER.info("LearningJava - Se inicia la prueba eliminar /delete/user con error");
+        response = userController.eliminarUsuario(userDTO);
+        String codigoResp = response.getBody().getStatus();
+        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue() + " del servicio /delete/user");
+        assertEquals("fail", codigoResp, "Prueba /delete/user con error exitosa.");
+    }
+
+    @Test
+    @DisplayName("Actualizar Usuario")
+    public void actualizarUsuario() throws Exception {
+        LOGGER.info("LearningJava - Se inicia la prueba del servicio /edit/user");
+        List<UserDTO> listDto = new ArrayList<>();
+        userDTO.setUser("Fernando");
+        userDTO.setPassword("pa$$12");
+        listDto.add(userDTO);
+        userDTO.setUser("Luis");
+        userDTO.setPassword("pa$$12");
+        listDto.add(userDTO);
+        response = userController.editaUsuario(listDto);
+        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue() + " de /edit/user.");
+        assertEquals(200, response.getStatusCodeValue(), "Prueba /edit/user exitosa");
+    }
+
+    @Test
+    @DisplayName("Prueba actualizar usuario con Error")
+    public void actualizarUsuarioError() {
+        List<UserDTO> listDto = new ArrayList<>();
+        userDTO.setUser("Fernando");
+        userDTO.setPassword("pa$$12");
+        listDto.add(userDTO);
+        userDTO.setUser(null);
+        userDTO.setPassword(null);
+        listDto.add(userDTO);
+        LOGGER.info("LearningJava - Se inicia la prueba actualizar /edit/user con error");
+        response = userController.editaUsuario(listDto);
+        String codigoResp = response.getBody().getStatus();
+        LOGGER.info("Respuesta del servicio: " + response.getStatusCodeValue() + " del servicio /edit/user");
+        assertEquals("fail", codigoResp, "Prueba /edit/user con error exitosa.");
     }
 }

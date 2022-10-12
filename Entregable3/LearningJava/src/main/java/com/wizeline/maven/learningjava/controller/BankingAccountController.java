@@ -11,7 +11,6 @@ import com.wizeline.maven.learningjava.client.AccountsJSONClient;
 import com.wizeline.maven.learningjava.model.BankAccountDTO;
 import com.wizeline.maven.learningjava.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.Update;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -135,8 +134,8 @@ public class BankingAccountController {
     }
 
     @DeleteMapping("/deleteAccounts")
-    public ResponseEntity<String> deleteAccounts() {
-        bankAccountService.deleteAccounts();
+    public ResponseEntity<String> deleteAccounts(@RequestBody BankAccountDTO bankAccountDTO) {
+        bankAccountService.deleteAccounts(bankAccountDTO);
         return new ResponseEntity<>("All accounts deleted", HttpStatus.OK);
     }
 
@@ -171,7 +170,7 @@ public class BankingAccountController {
         return bankAccountService.getAccountDetails(user, lastUsage);
     }
 
-    @Update("/editaCuenta/tipo/{tipo}")
+    @PutMapping("/editaCuenta/tipo/{tipo}")
     public ResponseEntity<ResponseDTO> editaCuentas(@PathVariable String tipo){
         return bankAccountService.editacuentas(tipo);
     }

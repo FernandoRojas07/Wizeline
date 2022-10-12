@@ -61,9 +61,15 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public void deleteAccounts() {
-        //Borrar todos los records que esten dentro de la coleccion bankAccountCollection en mongo db.
-        bankAccountRepository.deleteAll();
+    public ResponseEntity deleteAccounts(BankAccountDTO bankAccountDTO) {
+        ResponseEntity<ResponseDTO> response;
+        Query query = new Query();
+        if(!bankAccountDTO.isAccountActive()) {
+            query.addCriteria(Criteria.where("userName").is(bankAccountDTO.getUserName()));
+            return new ResponseEntity<>(mongoTemplate.remove(query,BankAccountDTO.class),null,HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(null,null,HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
     @Override
@@ -100,13 +106,22 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public ResponseEntity editacuentas(String tipo){
-        Query query = new Query();
-        query.addCriteria(Criteria.where("accountActive").is(true));
-        Update update = Update.update("title", "MongoTemplate").set("SecondType",tipo);
-        return new ResponseEntity<>(mongoTemplate.updateMulti(query, update, BankAccountDTO.class), null, HttpStatus.OK);
+        if(tipo.equals("")) {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("accountActive").is(true));
+            Update update = Update.update("title", "MongoTemplate").set("SecondType", tipo);
+            return new ResponseEntity<>(mongoTemplate.updateMulti(query, update, BankAccountDTO.class), null, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(null, null, HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
     public ResponseEntity insertaCuenta(BankAccountDTO bankAccountDTO){
-        return new ResponseEntity<>(mongoTemplate.save(bankAccountDTO), null,HttpStatus.OK);
+        ResponseEntity<ResponseDTO> response;
+        if(bankAccountDTO.isAccountActive()) {
+            return new ResponseEntity<>(mongoTemplate.save(bankAccountDTO,"bankAccountCollection"),null,HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(mongoTemplate.save(bankAccountDTO),null,HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 }

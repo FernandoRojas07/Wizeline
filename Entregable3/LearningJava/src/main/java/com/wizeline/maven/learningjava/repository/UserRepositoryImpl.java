@@ -18,6 +18,17 @@ public class UserRepositoryImpl {
 		return "success";
 	}
 
+	public String deleteUser(String user, String password) {
+		readFile(user,password);
+		LOGGER.info("Inicia procesamiento en capa de acceso de datos");
+		LOGGER.info("Inicia proceso de baja de usuaro en BD...");
+
+		deleteFile(user, password);
+
+		LOGGER.info("Baja Exitosa");
+		return "success";
+	}
+
 	public String login(String user, String password) {
 		createFile();
 		LOGGER.info("Inicia procesamiento en capa de acceso de datos");
@@ -30,6 +41,35 @@ public class UserRepositoryImpl {
 		}
 	}
 
+	public String updateUser(String userAnt, String passwordAnt, String userNew, String passwordNew){
+		LOGGER.info("Inicia procesamiento en capa de acceso de datos");
+		LOGGER.info("Inicia proceso de actualización de usuaro en BD...");
+		updateFile(userAnt, passwordAnt, userNew, passwordNew);
+		LOGGER.info("Baja Exitosa");
+		return "success";
+	}
+
+	private void updateFile(String userAnt, String passwordAnt, String userNew, String passwordNew) {
+		try {
+			File file = new File("file.txt");
+			if (file.createNewFile()) {
+				LOGGER.info("File created: " + file.getName());
+			} else {
+				LOGGER.info("File already exists.");
+			}
+			FileWriter fileWritter = new FileWriter(file.getName(),true);
+
+			BufferedWriter bw = new BufferedWriter(fileWritter);
+
+			bw.write(userNew + ", " + passwordNew);
+			bw.newLine();
+			bw.close();
+			LOGGER.info("Successfully wrote to the file.");
+		} catch (IOException e) {
+			LOGGER.info("An error occurred.");
+			e.printStackTrace();
+		}
+	}
 
 	private void createFile() {
 		try {
@@ -58,6 +98,28 @@ public class UserRepositoryImpl {
 			BufferedWriter bw = new BufferedWriter(fileWritter);
 			
 			bw.write(user+", "+password);
+			bw.newLine();
+			bw.close();
+			LOGGER.info("Successfully wrote to the file.");
+		} catch (IOException e) {
+			LOGGER.info("An error occurred.");
+			e.printStackTrace();
+		}
+	}
+
+	private void deleteFile(String user, String password) {
+		try {
+			File file = new File("file.txt");
+			if (file.createNewFile()) {
+				LOGGER.info("File created: " + file.getName());
+			} else {
+				LOGGER.info("File already exists.");
+			}
+			FileWriter fileWritter = new FileWriter(file.getName(),true);
+
+			BufferedWriter bw = new BufferedWriter(fileWritter);
+
+			bw.write(",");
 			bw.newLine();
 			bw.close();
 			LOGGER.info("Successfully wrote to the file.");

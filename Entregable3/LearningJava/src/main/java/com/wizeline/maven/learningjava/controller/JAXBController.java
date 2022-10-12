@@ -40,7 +40,6 @@ public class JAXBController {
 		}
 		return new ResponseEntity<XmlBean>(response, responseHeaders, HttpStatus.OK);
     }
-
 	
 	public void marshal() throws JAXBException, IOException {
 	    BookBean book = new BookBean();
@@ -54,7 +53,6 @@ public class JAXBController {
 	    mar.marshal(book, new File("./book.xml"));
 	}
 
-	
 	public BookBean unmarshall() throws JAXBException, IOException {
 	    JAXBContext context = JAXBContext.newInstance(BookBean.class);
 	    return (BookBean) context.createUnmarshaller()

@@ -19,12 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.wizeline.maven.learningjava.LearningJavaApplication;
 import com.wizeline.maven.learningjava.model.ResponseDTO;
 import com.wizeline.maven.learningjava.model.UserDTO;
@@ -68,7 +63,7 @@ public class UserController {
         LOGGER.info(msgProcPeticion);
         ResponseDTO response = new ResponseDTO();
 
-        response = createUser(userDTO.getUser(), userDTO.getPassword());
+        response = userService.createUser(userDTO.getUser(), userDTO.getPassword());
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json; charset=UTF-8");
@@ -84,7 +79,7 @@ public class UserController {
         userDTOList.stream().forEach( userDTO -> {
                     String user = userDTO.getUser();
                     String password = userDTO.getPassword();
-                    response.set(createUser(user, password));
+                    response.set(userService.createUser(user, password));
                     responseList.add(response.get());
                 }
         );
@@ -108,7 +103,23 @@ public class UserController {
         return queryPairs;
     }
 
-    private ResponseDTO createUser(String user, String password) {
-        return userService.createUser(user, password);
+    @DeleteMapping("/delete/user")
+    public ResponseEntity<ResponseDTO> eliminarUsuario(@RequestBody UserDTO userDTO){
+        LOGGER.info(msgProcPeticion);
+        ResponseDTO response = new ResponseDTO();
+        response = userService.eliminarUsuario(userDTO.getUser(), userDTO.getPassword());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json; charset=UTF-8");
+        return new ResponseEntity<>(response, responseHeaders, HttpStatus.OK);
+    }
+
+    @PutMapping("/edit/user")
+    public ResponseEntity<ResponseDTO> editaUsuario(@RequestBody List<UserDTO> userDTOList){
+        LOGGER.info(msgProcPeticion);
+        ResponseDTO response = new ResponseDTO();
+        response = userService.actualizarUsuario(userDTOList);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json; charset=UTF-8");
+        return new ResponseEntity<>(response, responseHeaders, HttpStatus.OK);
     }
 }
